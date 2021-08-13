@@ -11,4 +11,27 @@ public class HourlyEmployee extends Employee {
         this.hourlyRate = hourlyRate;
         this.amount = amount;
     }
+
+    public float getHourlyRate() {
+        return hourlyRate;
+    }
+
+    public float getAmount() {
+        return amount;
+    }
+
+    public void setHourlyRate(float hourlyRate) {
+        this.hourlyRate = hourlyRate;
+    }
+
+    @Override
+    public String toString() {
+        return "HourlyEmployee{" +
+                "name='" + this.getName() + '\'' +
+                ", role='" + this.getRole() + '\'' +
+                ", vacation_days=" + this.getVacation_days() +
+                ", hourlyRate=" + hourlyRate +
+                ", amount=" + amount +
+                '}';
+    }
 }

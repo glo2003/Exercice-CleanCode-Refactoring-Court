@@ -13,10 +13,6 @@ public abstract class Employee {
         this.vacation_days = vacation_days;
     }
 
-    public void takeHoliday(boolean isPayout) {
-        // TODO can payout 5 holidays or take one
-    }
-
     public String getName() {
         return name;
     }
@@ -27,5 +23,14 @@ public abstract class Employee {
 
     public int getVacation_days() {
         return vacation_days;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", role='" + role + '\'' +
+                ", vacation_days=" + vacation_days +
+                '}';
     }
 }
