@@ -25,6 +25,10 @@ public abstract class Employee {
         return vacation_days;
     }
 
+    public void setVacation_days(int vacation_days) {
+        this.vacation_days = vacation_days;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
