@@ -14,7 +14,7 @@ class CompanyPayrollTest {
     public static final float HOURLY_AMOUNT = 25;
     public static final String HOURLY_NAME = "William";
     public static final String SALARIED_NAME = "Xavier";
-    public static final float MONTHLY_AMOUNT = 10_000;
+    public static final float BIWEEKLY_AMOUNT = 10_000;
     public static final float RAISE = 10;
     public static final float ANOTHER_MONTHLY_AMOUNT = 20_000;
     public static final int VACATION_DAYS = 12;
@@ -31,14 +31,14 @@ class CompanyPayrollTest {
     @BeforeEach
     void setUp() {
         company = new CompanyPayroll();
-        vp = new HourlyEmployee("Alice", "vp", 25, 100, 35.5f * 4);
+        vp = new HourlyEmployee("Alice", "vp", 25, 100, 35.5f * 2);
         eng = new SalariedEmployee("Bob", "engineer", 4, 1500);
         manager = new SalariedEmployee("Charlie", "manager", 10, 2000);
-        intern1 = new HourlyEmployee("Ernest", "intern", 10, 5, 50 * 4);
-        intern2 = new HourlyEmployee("Fred", "intern", 10, 5, 50 * 4);
+        intern1 = new HourlyEmployee("Ernest", "intern", 10, 5, 50 * 2);
+        intern2 = new HourlyEmployee("Fred", "intern", 10, 5, 50 * 2);
 
         hourlyEmployee = new HourlyEmployee(HOURLY_NAME, "engineer", VACATION_DAYS, HOURLY_RATE, HOURLY_AMOUNT);
-        salariedEmployee = new SalariedEmployee(SALARIED_NAME, "engineer", VACATION_DAYS, MONTHLY_AMOUNT);
+        salariedEmployee = new SalariedEmployee(SALARIED_NAME, "engineer", VACATION_DAYS, BIWEEKLY_AMOUNT);
         anotherSalariedEmployee = new SalariedEmployee("Yan", "manager", VACATION_DAYS, ANOTHER_MONTHLY_AMOUNT);
     }
 
@@ -61,7 +61,7 @@ class CompanyPayrollTest {
 
         Paycheck paycheck = company.getPendings().get(0);
         assertThat(paycheck.getTo()).isEqualTo(SALARIED_NAME);
-        assertThat(paycheck.getAmount()).isEqualTo(MONTHLY_AMOUNT);
+        assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_AMOUNT);
     }
 
     @Test
@@ -156,7 +156,7 @@ class CompanyPayrollTest {
 
         company.createPending();
         Paycheck paycheck = company.getPendings().get(0);
-        assertThat(paycheck.getAmount()).isEqualTo(MONTHLY_AMOUNT + RAISE);
+        assertThat(paycheck.getAmount()).isEqualTo(BIWEEKLY_AMOUNT + RAISE);
     }
 
     @Test
@@ -178,7 +178,7 @@ class CompanyPayrollTest {
         company.takeHoliday(salariedEmployee, true, null);
 
         Paycheck pending = company.getPendings().get(0);
-        assertThat(pending.getAmount()).isEqualTo(MONTHLY_AMOUNT / 4);
+        assertThat(pending.getAmount()).isEqualTo(BIWEEKLY_AMOUNT / 2);
         assertThat(salariedEmployee.getVacation_days()).isEqualTo(VACATION_DAYS - 5);
     }
 
@@ -201,7 +201,7 @@ class CompanyPayrollTest {
         company.takeHoliday(hourlyEmployee, true, null);
 
         Paycheck pending = company.getPendings().get(0);
-        assertThat(pending.getAmount()).isEqualTo(HOURLY_AMOUNT * HOURLY_RATE / 4f);
+        assertThat(pending.getAmount()).isEqualTo(HOURLY_AMOUNT * HOURLY_RATE / 2f);
         assertThat(hourlyEmployee.getVacation_days()).isEqualTo(VACATION_DAYS - 5);
     }
 
@@ -225,7 +225,7 @@ class CompanyPayrollTest {
 
         float avg = company.avgPayCehck_pending();
 
-        assertThat(avg).isEqualTo((MONTHLY_AMOUNT + ANOTHER_MONTHLY_AMOUNT) / 2);
+        assertThat(avg).isEqualTo((BIWEEKLY_AMOUNT + ANOTHER_MONTHLY_AMOUNT) / 2);
     }
 
     @Test
@@ -236,7 +236,7 @@ class CompanyPayrollTest {
 
         float t = company.getTotalmoney();
 
-        assertThat(t).isEqualTo(MONTHLY_AMOUNT + ANOTHER_MONTHLY_AMOUNT);
+        assertThat(t).isEqualTo(BIWEEKLY_AMOUNT + ANOTHER_MONTHLY_AMOUNT);
     }
 
     @Test

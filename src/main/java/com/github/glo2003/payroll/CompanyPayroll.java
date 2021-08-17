@@ -152,7 +152,7 @@ private List<Boolean> h; // who takes holidays
                 p.add(new Paycheck(e.getName(), he.getAmount() * he.getRate()));
             } else if (e instanceof SalariedEmployee) {        // is salaried
                 SalariedEmployee se = (SalariedEmployee) e;
-                p.add(new Paycheck(e.getName(), ((SalariedEmployee) e).getMonthly()));
+                p.add(new Paycheck(e.getName(), ((SalariedEmployee) e).getBiweekly()));
             } else {                                                 /// error
                 throw new RuntimeException("something happened");
             }
@@ -178,14 +178,18 @@ private List<Boolean> h; // who takes holidays
         he.setRate(he.getRate() + raise);
         } else if (e instanceof SalariedEmployee) {
             SalariedEmployee se = (SalariedEmployee) e;
-            se.setMonthly(se.getMonthly() + raise);
+            se.setBiweekly(se.getBiweekly() + raise);
         } else {
             throw new RuntimeException("something happened");
         }
     }
 
     /**
-     *
+     * There is two possible cases:
+     * 1. payout = false
+     *    The employee take holidays from their holidays bank, it does not impact the current pay
+     * 2. payout = true
+     *    The employee decides to not take their holidays and instead get paid a full week (5 days)
      * @param e employee
      * @param payout if payout then pay a week
      * @param amount null or not used if not needed
@@ -200,6 +204,8 @@ private List<Boolean> h; // who takes holidays
         if (payout) {
             if (amount != null) { // if payout and amount != null
                 throw new RuntimeException("bad input");
+            } else {
+                amount = 5;
             }
         } else {
             if (amount == null) { // if not payout and null
@@ -213,8 +219,8 @@ private List<Boolean> h; // who takes holidays
         if (e instanceof HourlyEmployee) {
             HourlyEmployee he = (HourlyEmployee) e;
             if (payout) {
-                p.add(new Paycheck(e.getName(),  ((HourlyEmployee)e).getAmount()* ((HourlyEmployee)e).getRate() / 4f)); // pay 5 days
-                e.setVacation_days(e.getVacation_days() - 5);
+                p.add(new Paycheck(e.getName(),  ((HourlyEmployee)e).getAmount()* ((HourlyEmployee)e).getRate() / 2f)); // pay 5 days
+                e.setVacation_days(e.getVacation_days() - amount);
             } else {
                 e.setVacation_days(e.getVacation_days() - amount);
             }
@@ -222,8 +228,8 @@ private List<Boolean> h; // who takes holidays
             SalariedEmployee se = (SalariedEmployee) e;
 
             if (payout) {
-                p.add(new Paycheck(e.getName(), ((SalariedEmployee)e).getMonthly() / 4f)); // pay a week
-                e.setVacation_days(e.getVacation_days() - 5);
+                p.add(new Paycheck(e.getName(), ((SalariedEmployee)e).getBiweekly() / 2f)); // pay a week
+                e.setVacation_days(e.getVacation_days() - amount);
             } else {
                 e.setVacation_days(e.getVacation_days() - amount);
             }

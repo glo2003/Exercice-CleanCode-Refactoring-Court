@@ -47,5 +47,4 @@ public class Main {
         System.out.println("\n----- Pay -----");
         companyPayroll.processPending();
     }
-
 }

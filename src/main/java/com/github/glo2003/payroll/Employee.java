@@ -1,6 +1,5 @@
 package com.github.glo2003.payroll;
 
-import com.sun.xml.internal.bind.v2.TODO;
 
 public abstract class Employee {
     private String name;
