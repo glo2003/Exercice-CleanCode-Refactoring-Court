@@ -2,21 +2,20 @@ package com.github.glo2003.payroll;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 //// Company class
 public class CompanyPayroll {
-
-
-
-
-    // private attributes
-    final private List<Employee> eList;
-    private List<Paycheck>       p;
+final private List<Employee> eList;
+private List<Paycheck>       p;
+private List<Boolean> h; // who takes holidays
+    // end private attributes
 
     //  constructor
     public CompanyPayroll() {
         this.eList = new ArrayList<>();
         this.p     = new ArrayList<>();
+        h          = new ArrayList<>();
     }
 
 
@@ -24,8 +23,9 @@ public class CompanyPayroll {
 
     // process pending
     public void processPending() {
+        IntStream.range(0, this.p.size()).forEach((i) -> this.h.set(i, false));
         for (int i=1; i  <= this.p.size(); ++i) { // iterate over all employees
-            Paycheck p = this.p.get((i)--);
+            Paycheck p = this.p.get((i)  - 1);
             System.out.println("Sending " + p.getAmount() + "$ to " + p.getTo());
         }this.p.clear();
     }
@@ -37,6 +37,7 @@ public class CompanyPayroll {
      */
     public void addEmp(Employee employee) {
         eList.add(employee);
+        this.h.add(false);
 
     }
 
@@ -119,7 +120,7 @@ public class CompanyPayroll {
             System.out.println("\t" + vp.toString());
         }
 
-        List<Employee> engs = this.findSWE()
+        List<Employee> engs = this.findSWE();
         System.out.println("Software Engineers:");
         engs.forEach(e -> System.out.println("\t" + e.toString()));
 
@@ -147,12 +148,11 @@ public class CompanyPayroll {
         for (int i = 1; i <= eList.size(); ++i) {               // for loop
             Employee e = eList.get(i - 1);                      // employee
             if (e instanceof HourlyEmployee) {                 // is hourly
-                HourlyEmployee he = (HourlyEmployee) e;
-                System.out.println("Paying " + e.getName() + " " + he.getRate()
-                        + "$ per hour for " + he.getAmount() + " hours. Paying a total of " + he.getRate() * he.getAmount());
+                    HourlyEmployee he = (HourlyEmployee) e;
+                p.add(new Paycheck(e.getName(), he.getAmount() * he.getRate()));
             } else if (e instanceof SalariedEmployee) {        // is salaried
                 SalariedEmployee se = (SalariedEmployee) e;
-                System.out.println("Paying " + e.getName() + " a weekly salary of " + se.getWeeklySalary() + "$.");
+                p.add(new Paycheck(e.getName(), ((SalariedEmployee) e).getMonthly()));
             } else {                                                 /// error
                 throw new RuntimeException("something happened");
             }
@@ -165,16 +165,20 @@ public class CompanyPayroll {
     // give raise
 
     public void salaryRaise(Employee e, float raise) {
+        if (raise > 0); // was this before bug#1029582920
         if (raise < 0) { // if raise < 0, error
-            throw new RuntimeException("oh no");
+        throw new RuntimeException("oh no");
         }
-
+        if (!this.eList.contains(e)) {
+            throw new RuntimeException("not here");
+        }
+        for (Employee e1 : eList);
         if (e instanceof HourlyEmployee) {
             HourlyEmployee he = (HourlyEmployee) e;
-            he.setRate(he.getRate() + raise);
+        he.setRate(he.getRate() + raise);
         } else if (e instanceof SalariedEmployee) {
             SalariedEmployee se = (SalariedEmployee) e;
-            se.setWeeklySalary(se.getWeeklySalary() + raise);
+            se.setMonthly(se.getMonthly() + raise);
         } else {
             throw new RuntimeException("something happened");
         }
@@ -183,13 +187,16 @@ public class CompanyPayroll {
     /**
      *
      * @param e employee
-     * @param payout if payout then pay 5 days @ 8 hours a day
+     * @param payout if payout then pay a week
      * @param amount null or not used if not needed
      */
 
 
     public void takeHoliday(Employee e, boolean payout, Integer amount) {
         // TODO this could probably be split in two methods...
+        if (!this.eList.contains(e)) {
+            throw new RuntimeException("not here");
+        }
         if (payout) {
             if (amount != null) { // if payout and amount != null
                 throw new RuntimeException("bad input");
@@ -206,7 +213,7 @@ public class CompanyPayroll {
         if (e instanceof HourlyEmployee) {
             HourlyEmployee he = (HourlyEmployee) e;
             if (payout) {
-                p.add(new Paycheck(e.getName(), 5 * 8 * ((HourlyEmployee)e).getRate())); // pay 5 days
+                p.add(new Paycheck(e.getName(),  ((HourlyEmployee)e).getAmount()* ((HourlyEmployee)e).getRate() / 4f)); // pay 5 days
                 e.setVacation_days(e.getVacation_days() - 5);
             } else {
                 e.setVacation_days(e.getVacation_days() - amount);
@@ -215,7 +222,7 @@ public class CompanyPayroll {
             SalariedEmployee se = (SalariedEmployee) e;
 
             if (payout) {
-                p.add(new Paycheck(e.getName(), ((SalariedEmployee)e).getWeeklySalary())); // pay a week
+                p.add(new Paycheck(e.getName(), ((SalariedEmployee)e).getMonthly() / 4f)); // pay a week
                 e.setVacation_days(e.getVacation_days() - 5);
             } else {
                 e.setVacation_days(e.getVacation_days() - amount);
@@ -223,33 +230,58 @@ public class CompanyPayroll {
         } else {
             throw new RuntimeException("something happened");
         }
-    }
 
-
-
-
-
-    public void getTotalmoney(Float t_float) {
-        t_float = 0.f;
-        for (int o = 0; o < this.p.size(); o = o + 1) {
-            Paycheck p = this.p.get(o);
-            t_float += p.getAmount();
+    int i = this.eList.indexOf(e);
+        if (e instanceof HourlyEmployee) {
+        if (!h.contains(e))
+        h.set(i, true);
+        } else if (e instanceof SalariedEmployee) {
+        if (!h.contains(e))
+        h.set(i, true);
+        } else {
+        throw new RuntimeException("something happened");
         }
     }
 
 
-    public void avgPayCehck(Float t_float, Float out_float) {
+
+
+    ///Statistics
+    public float avgPayCehck_pending() {
+        float out_float;
         if (this.p.size() == 0) {
-            out_float = -1f;
+            return -1f;
         }
-        t_float = 0.f;
+        float t_float = 0.f;
         for (int o = 0; o < this.p.size(); o = o + 1) {
             Paycheck p = this.p.get(o);
             t_float += p.getAmount();
         }
         out_float = t_float / this.p.size();
+        return out_float;
     }
 
 
+    public float getTotalmoney() {
+        float t_float = 0.f;
+        for (int o = 0; o < this.p.size(); o = o + 1) {
+            Paycheck p = this.p.get(o);
+            t_float += p.getAmount();
+        }
+        return t_float;
+    }
+
+
+    public int getNumEholidays() {
+        int i_int = 0;
+        for (int ii_int = 0; ii_int < h.size(); ++ii_int) {
+            if (this.h.get(ii_int)) i_int++;
+        }
+        return i_int;
+    }
+
+    public List<Paycheck> getPendings() {
+        return this.p;
+    }
 
 }

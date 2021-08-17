@@ -1,19 +1,19 @@
 package com.github.glo2003.payroll;
 
 public class SalariedEmployee extends Employee {
-    private float weeklySalary;
+    private float monthly;
 
-    public SalariedEmployee(String name, String role, int vacation_days, float weeklySalary) {
+    public SalariedEmployee(String name, String role, int vacation_days, float monthly) {
         super(name, role, vacation_days);
-        this.weeklySalary = weeklySalary;
+        this.monthly = monthly;
     }
 
-    public float getWeeklySalary() {
-        return weeklySalary;
+    public float getMonthly() {
+        return monthly;
     }
 
-    public void setWeeklySalary(float weeklySalary) {
-        this.weeklySalary = weeklySalary;
+    public void setMonthly(float monthly) {
+        this.monthly = monthly;
     }
 
     @Override
@@ -22,7 +22,7 @@ public class SalariedEmployee extends Employee {
                 "name='" + this.getName() + '\'' +
                 ", role='" + this.getRole() + '\'' +
                 ", vacation_days=" + this.getVacation_days() +
-                ", weeklySalary=" + weeklySalary +
+                ", monthly=" + monthly +
                 '}';
     }
 }
