@@ -17,7 +17,6 @@ class CompanyPayrollTest {
     public static final float BIWEEKLY_AMOUNT = 10_000;
     public static final float RAISE = 10;
     public static final float ANOTHER_BIWEEKLY_AMOUNT = 20_000;
-    public static final int VACATION_DAYS = 12;
 
     CompanyPayroll company;
     Employee vp;
