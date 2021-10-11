@@ -23,17 +23,14 @@ public class Main {
         companyPayroll.addEmp(e5);
 
         System.out.println("----- Listing employees -----");
-        companyPayroll.listEmployees();
+        companyPayroll.find_Vice_Presidents().forEach(System.out::println);
+        companyPayroll.findMgs().forEach(System.out::println);
+        companyPayroll.findSWE().forEach(System.out::println);
+        companyPayroll.find_interns().forEach(System.out::println);
 
         System.out.println("----- Giving raises -----");
         companyPayroll.salaryRaise(e1, 10);
         companyPayroll.salaryRaise(e2, 100);
-
-        System.out.println("\n----- Holidays -----");
-        companyPayroll.takeHoliday(e1, true, null);
-        companyPayroll.takeHoliday(e2, false, 10);
-        companyPayroll.takeHoliday(e3, true, null);
-        System.out.println("Number of employees in holidays: " + companyPayroll.getNumEholidays());
 
         System.out.println("\n----- Create paychecks -----");
         companyPayroll.createPending();

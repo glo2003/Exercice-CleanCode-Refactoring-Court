@@ -172,52 +172,6 @@ class CompanyPayrollTest {
     }
 
     @Test
-    void salariedPayoutHolidays_paysOneWeek() {
-        company.addEmp(salariedEmployee);
-
-        company.takeHoliday(salariedEmployee, true, null);
-
-        Paycheck pending = company.getPendings().get(0);
-        assertThat(pending.getAmount()).isEqualTo(BIWEEKLY_AMOUNT / 2);
-        assertThat(salariedEmployee.getVacation_days()).isEqualTo(VACATION_DAYS - 5);
-    }
-
-
-    @Test
-    void salariedHolidays_removesVacantionDays() {
-        company.addEmp(salariedEmployee);
-        int amount = 2;
-
-        company.takeHoliday(salariedEmployee, false, amount);
-
-        assertThat(company.getPendings()).hasSize(0);
-        assertThat(salariedEmployee.getVacation_days()).isEqualTo(VACATION_DAYS - amount);
-    }
-
-    @Test
-    void hourlyPayoutHolidays_paysOneWeek() {
-        company.addEmp(hourlyEmployee);
-
-        company.takeHoliday(hourlyEmployee, true, null);
-
-        Paycheck pending = company.getPendings().get(0);
-        assertThat(pending.getAmount()).isEqualTo(HOURLY_AMOUNT * HOURLY_RATE / 2f);
-        assertThat(hourlyEmployee.getVacation_days()).isEqualTo(VACATION_DAYS - 5);
-    }
-
-
-    @Test
-    void hourlyHolidays_removesVacantionDays() {
-        company.addEmp(hourlyEmployee);
-        int amount = 2;
-
-        company.takeHoliday(hourlyEmployee, false, amount);
-
-        assertThat(company.getPendings()).hasSize(0);
-        assertThat(hourlyEmployee.getVacation_days()).isEqualTo(VACATION_DAYS - amount);
-    }
-
-    @Test
     void avgPayCehck_pending() {
         company.addEmp(salariedEmployee);
         company.addEmp(anotherSalariedEmployee);
@@ -237,35 +191,5 @@ class CompanyPayrollTest {
         float t = company.getTotalmoney();
 
         assertThat(t).isEqualTo(BIWEEKLY_AMOUNT + ANOTHER_MONTHLY_AMOUNT);
-    }
-
-    @Test
-    void getNumEholidaysShouldReturnZeroWhenEveryoneWorks() {
-        company.addEmp(vp);
-        company.addEmp(eng);
-        company.addEmp(manager);
-        company.addEmp(intern1);
-        company.addEmp(intern2);
-
-        int x = company.getNumEholidays();
-
-        assertThat(x).isEqualTo(0);
-    }
-
-    @Test
-    void getNumEholidaysShouldReturnNumberOfPeopleInHolidays() {
-        company.addEmp(vp);
-        company.addEmp(eng);
-        company.addEmp(manager);
-        company.addEmp(intern1);
-        company.addEmp(intern2);
-
-        company.takeHoliday(vp, false, 2);
-        company.takeHoliday(vp, false, 2);
-        company.takeHoliday(eng, false, 2);
-        company.takeHoliday(manager, false, 2);
-
-        int x = company.getNumEholidays();
-        assertThat(x).isEqualTo(3);
     }
 }

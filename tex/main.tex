@@ -56,17 +56,17 @@ Le but de cet exercise est de mettre en pratique le Clean Code et le réusinage 
 
 Cet exercice peut être réalisé seul ou en équipe de 2 à 3 personnes. Nous vous conseillons de réaliser l'exercise en \texttt{Pair Programming}. Nous vous recommandons aussi de créer un \texttt{repository} GitHub pour partager le code entre les membres de l'équipe et de faire un commit par étape. Une solution sera proposée en Java sur le \texttt{repository} de l'exercise.
 
-Le code de base se trouve ici: \href{https://github.com/glo2003/Exercice-CleanCode-Refactoring}{glo2003/Exercice-CleanCode-Refactoring}.
+L'exercice est disponible en deux version, la version longue se trouve ici: \href{https://github.com/glo2003/Exercice-CleanCode-Refactoring}{glo2003/Exercice-CleanCode-Refactoring}. La version courte de l'exercice se trouve ici: \href{https://github.com/glo2003/Exercice-CleanCode-Refactoring-Court}{glo2003/Exercice-CleanCode-Refactoring-Court}
 
 \section{Contexte}
 Vous venez d'être engagé en tant que consultant dans une start-up offrant des outils de gestion de personnels. Suite à une croissance rapide accompagnée de nombreux changements à la base de code, ils se retrouvent maintenant avec une productivité abyssale à cause de la pauvre qualité du code.
 
 Votre mandat est de coacher les employés afin de leur donner les connaissances nécessaire pour améliorer la qualité de leur code base tout en continuant de livrer de nouvelles fonctionalitées.
 
-En guise d'exemple, vous vous attaquez au module de paie (\texttt{payroll}) qui exemple plusieurs \texttt{code smells} et mauvais designs. Les employés de la start-up vous explique que le module de paie permet de gérer les employés, la création chèques de paie, la gestion des vacances et quelques statistiques sur la paie.
+En guise d'exemple, vous vous attaquez au module de paie (\texttt{payroll}) qui exemple plusieurs \texttt{code smells} et mauvais designs. Les employés de la start-up vous explique que le module de paie permet de gérer les employés, la création chèques de paie, la gestion des vacances (seulement pour la version longue de l'exercice) et quelques statistiques sur la paie.
 
 \section{Tâche}
-On désire ajouter un nouveau type d'employé au module de paie, un employé à contrat qui n'est payé qu'à la fin de certains \texttt{milestones} du projet. Les employés à contrat ne peuvent pas prendre de jours de vacances.
+On désire ajouter un nouveau type d'employé au module de paie, un employé à contrat qui n'est payé qu'à la fin de certains \texttt{milestones} du projet. Les employés à contrat ne peuvent pas prendre de jours de vacances (seulement pour la version longue de l'exercice).
 
 Toutefois, étant donné la pauvre qualité, cet ajout se révèle être tout un défi. Le code viole les principles de Clean Code et présente de mauvais designs. Vous relevé notamment que le code est exceptionnellement impropre, que la classe \texttt{CompanyPayroll} ressemble à une \texttt{god class} avec toute la logique centralisée dans cette classe.
 
@@ -105,7 +105,7 @@ Maintenant que vous avez pris vos marques dans la base de code, il est temps de 
 
 Maintenant que le code est propre, il devrait être facile d'ajouter le nouveau type d'employé. Le nouveau type d'employé est un employé à contrat qui n'est payé qu'à la complétion de certains \texttt{milestones} du projet. Pour simplifier la logique, on considère qu'un nouveau \texttt{milestone} est complété à chaque paie. Ainsi, on doit pouvoir créer un employé à contrat en spécifiant une liste de montants correspondant à la paie reçu lors de leur complétion. Ainsi, si on crée un employée avec les montants \texttt{[100, 200, 300]}, alors l'employé sera payé 100\$ à la première paie, 200\$ à la suivante, puis 300\$ à la dernière paie. L'employé ne peut ensuite plus recevoir de paie.
 
-Ces employés peuvent recevoir des augmentations de salaire qui sont ajouté au montant du \texttt{milestone} courant. Un employé à contrat ne peut pas recevoir d'augmentation après la fin de leur contrat, l'opération ne doit alors rien faire. Les employés à contrat ne peuvent pas prendre de journées de vacances.
+Ces employés peuvent recevoir des augmentations de salaire qui sont ajouté au montant du \texttt{milestone} courant. Un employé à contrat ne peut pas recevoir d'augmentation après la fin de leur contrat, l'opération ne doit alors rien faire. Les employés à contrat ne peuvent pas prendre de journées de vacances (seulement pour la version longue de l'exercice).
 
 \section{Solution}
 La solution de cet exercice se trouve sur \href{https://github.com/glo2003/Exercice-CleanCode-Refactoring}{glo2003/Exercice-CleanCode-Refactoring}. Il y a une branche par étape de la solution, soit \textit{clean} pour le code après le nettoyage, \textit{refactoring} après le réusinage et \textit{new-feature} après l'ajout de la fonctionalité. Le fichier \textit{CLEAN.md} résume les changements apportés lors de la phase de Clean Code et \textit{REFACTORING.md} ceux de la phase de réusinage.
