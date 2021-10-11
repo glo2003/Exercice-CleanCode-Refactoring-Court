@@ -1,27 +1,25 @@
 package com.github.glo2003.payroll;
 
 public class HourlyEmployee extends Employee {
-    private float rate;
-    private float amount;
+    private final float workedHoursFor2Weeks;
+    private float hourlyRate;
 
-    // TODO constructor
-
-    public HourlyEmployee(String name, String role, int vacation_days, float rate, float amount) {
-        super(name, role, vacation_days);
-        this.rate = rate;
-        this.amount = amount;
+    public HourlyEmployee(String name, String role, float hourlyRate, float workedHoursFor2Weeks) {
+        super(name, role);
+        this.hourlyRate = hourlyRate;
+        this.workedHoursFor2Weeks = workedHoursFor2Weeks;
     }
 
-    public float getRate() {
-        return rate;
+    public float getHourlyRate() {
+        return hourlyRate;
     }
 
-    public float getAmount() {
-        return amount;
+    public void setHourlyRate(float hourlyRate) {
+        this.hourlyRate = hourlyRate;
     }
 
-    public void setRate(float rate) {
-        this.rate = rate;
+    public float getWorkedHoursFor2Weeks() {
+        return workedHoursFor2Weeks;
     }
 
     @Override
@@ -29,9 +27,8 @@ public class HourlyEmployee extends Employee {
         return "HourlyEmployee{" +
                 "name='" + this.getName() + '\'' +
                 ", role='" + this.getRole() + '\'' +
-                ", vacation_days=" + this.getVacation_days() +
-                ", hourlyRate=" + rate +
-                ", amount=" + amount +
+                ", hourlyRate=" + hourlyRate +
+                ", workedHoursFor2Weeks=" + workedHoursFor2Weeks +
                 '}';
     }
 }

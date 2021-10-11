@@ -1,8 +1,8 @@
 package com.github.glo2003.payroll;
 
 public class Paycheck {
-    private String to;
-    private float amount;
+    private final String to;
+    private final float amount;
 
     public Paycheck(String to, float amount) {
         this.to = to;
