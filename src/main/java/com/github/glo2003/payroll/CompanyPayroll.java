@@ -24,7 +24,10 @@ public class CompanyPayroll {
 
     public void createPendingPaychecks() {
         for (Employee e : employees) {
-            pendingPaychecks.add(new Paycheck(e.getName(), e.getPayForTwoWeeks()));
+            float payForTwoWeeks = e.getPayForTwoWeeks();
+            if (payForTwoWeeks > 0) {
+                pendingPaychecks.add(new Paycheck(e.getName(), payForTwoWeeks));
+            }
         }
     }
 

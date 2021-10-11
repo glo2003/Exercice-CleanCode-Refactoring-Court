@@ -2,9 +2,12 @@ package com.github.glo2003;
 
 import com.github.glo2003.payroll.CompanyPayroll;
 import com.github.glo2003.payroll.Role;
+import com.github.glo2003.payroll.employees.ContractEmployee;
 import com.github.glo2003.payroll.employees.Employee;
 import com.github.glo2003.payroll.employees.HourlyEmployee;
 import com.github.glo2003.payroll.employees.SalariedEmployee;
+
+import java.util.LinkedList;
 
 public class Main {
 
@@ -16,12 +19,17 @@ public class Main {
         Employee e3 = new SalariedEmployee("Charlie", Role.MANAGER, 2000);
         Employee e4 = new HourlyEmployee("Ernest", Role.INTERN, 5, 50 * 4);
         Employee e5 = new HourlyEmployee("Fred", Role.INTERN, 5, 50 * 4);
+        LinkedList<Float> payouts = new LinkedList<Float>() {{
+            add(100f); add(200f); add(300f);
+        }};
+        Employee e6 = new ContractEmployee("Joe", Role.MANAGER, payouts);
 
         companyPayroll.addEmployee(e1);
         companyPayroll.addEmployee(e2);
         companyPayroll.addEmployee(e3);
         companyPayroll.addEmployee(e4);
         companyPayroll.addEmployee(e5);
+        companyPayroll.addEmployee(e6);
 
         System.out.println("----- Giving raises -----");
         companyPayroll.giveRaise(e1, 10);
