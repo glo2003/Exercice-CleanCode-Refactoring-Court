@@ -1,5 +1,10 @@
 package com.github.glo2003.payroll;
 
+import com.github.glo2003.payroll.employees.Employee;
+import com.github.glo2003.payroll.employees.HourlyEmployee;
+import com.github.glo2003.payroll.employees.SalariedEmployee;
+import com.github.glo2003.payroll.exceptions.EmployeeDoesNotWorkHereException;
+import com.github.glo2003.payroll.exceptions.InvalidRaiseException;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,15 +36,15 @@ class CompanyPayrollTest {
     @BeforeEach
     void setUp() {
         company = new CompanyPayroll();
-        vp = new HourlyEmployee("Alice", "vp", 100, 35.5f * 2);
-        eng = new SalariedEmployee("Bob", "engineer", 1500);
-        manager = new SalariedEmployee("Charlie", "manager", 2000);
-        intern1 = new HourlyEmployee("Ernest", "intern", 5, 50 * 2);
-        intern2 = new HourlyEmployee("Fred", "intern", 5, 50 * 2);
+        vp = new HourlyEmployee("Alice", Role.VICE_PRESIDENT, 100, 35.5f * 2);
+        eng = new SalariedEmployee("Bob", Role.ENGINEER, 1500);
+        manager = new SalariedEmployee("Charlie", Role.MANAGER, 2000);
+        intern1 = new HourlyEmployee("Ernest", Role.INTERN, 5, 50 * 2);
+        intern2 = new HourlyEmployee("Fred", Role.INTERN, 5, 50 * 2);
 
-        hourlyEmployee = new HourlyEmployee(HOURLY_NAME, "engineer", HOURLY_RATE, HOURLY_AMOUNT);
-        salariedEmployee = new SalariedEmployee(SALARIED_NAME, "engineer", BIWEEKLY_AMOUNT);
-        anotherSalariedEmployee = new SalariedEmployee("Yan", "manager", ANOTHER_BIWEEKLY_AMOUNT);
+        hourlyEmployee = new HourlyEmployee(HOURLY_NAME, Role.ENGINEER, HOURLY_RATE, HOURLY_AMOUNT);
+        salariedEmployee = new SalariedEmployee(SALARIED_NAME, Role.ENGINEER, BIWEEKLY_AMOUNT);
+        anotherSalariedEmployee = new SalariedEmployee("Yan", Role.MANAGER, ANOTHER_BIWEEKLY_AMOUNT);
     }
 
     @Test
@@ -138,7 +143,7 @@ class CompanyPayrollTest {
     }
 
     @Test
-    void giveRaiseToHourlyEmployee_shouldRaiseHourlySalary() {
+    void giveRaiseToHourlyEmployee_shouldRaiseHourlySalary() throws Exception {
         company.addEmployee(hourlyEmployee);
 
         company.giveRaise(hourlyEmployee, RAISE);
@@ -149,7 +154,7 @@ class CompanyPayrollTest {
     }
 
     @Test
-    void giveRaiseToSalariedEmployee_shouldRaiseMonthlySalary() {
+    void giveRaiseToSalariedEmployee_shouldRaiseMonthlySalary() throws Exception {
         company.addEmployee(salariedEmployee);
 
         company.giveRaise(salariedEmployee, RAISE);
@@ -163,12 +168,12 @@ class CompanyPayrollTest {
     void negativeRaise_shouldThrow() {
         company.addEmployee(eng);
 
-        Assert.assertThrows(RuntimeException.class, () -> company.giveRaise(eng, -1));
+        Assert.assertThrows(InvalidRaiseException.class, () -> company.giveRaise(eng, -1));
     }
 
     @Test
     void giveRaiseToAnAbsentEmployee_shouldThrow() {
-        Assert.assertThrows(RuntimeException.class, () -> company.giveRaise(eng, 10));
+        Assert.assertThrows(EmployeeDoesNotWorkHereException.class, () -> company.giveRaise(eng, 10));
     }
 
     @Test
@@ -192,4 +197,5 @@ class CompanyPayrollTest {
 
         assertThat(t).isEqualTo(BIWEEKLY_AMOUNT + ANOTHER_BIWEEKLY_AMOUNT);
     }
+
 }

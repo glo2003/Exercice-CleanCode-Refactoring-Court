@@ -1,20 +1,26 @@
-package com.github.glo2003.payroll;
+package com.github.glo2003.payroll.employees;
 
+
+import com.github.glo2003.payroll.Role;
 
 public abstract class Employee {
     private final String name;
-    private final String role;
+    private final Role role;
 
-    public Employee(String name, String role) {
+    public Employee(String name, Role role) {
         this.name = name;
         this.role = role;
     }
+
+    abstract public float getPayForTwoWeeks();
+
+    abstract public void giveRaise(float raise);
 
     public String getName() {
         return name;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
